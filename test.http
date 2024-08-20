@@ -1,0 +1,33 @@
+### Create a new book
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "The Lord of the Rings",
+  "author": "J.R.R. Tolkien",
+  "genre": "Fantasy"
+}
+
+### Get all books
+GET http://localhost:8080/books?page=2&size=10
+Accept: application/json
+
+### Get a book by id
+GET http://localhost:8080/books/1
+Accept: application/json
+
+### Update a book
+PUT http://localhost:8080/books/1
+Content-Type: application/json
+
+{
+  "title": "The Lord of the Rings",
+  "author": "J.R.R. Tolkien",
+  "genre": "Fantasy OK"
+} 
+
+### Delete a book
+DELETE http://localhost:8080/books/2
+Accept: application/json
+
+
