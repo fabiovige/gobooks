@@ -1,6 +1,8 @@
 package service
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type Book struct {
 	ID     int
@@ -44,8 +46,9 @@ func (s *BookService) GetBookByID(id int) (*Book, error) {
 	return &book, nil
 }
 
-func (s *BookService) GetBooks(offset, limit int) ([]Book, error) {
+func (s *BookService) GetBooks(offset, limit int, filters map[string]string) ([]Book, error) {
 	query := "SELECT id, title, author, genre FROM books LIMIT ? OFFSET ?"
+
 	rows, err := s.db.Query(query, limit, offset)
 	if err != nil {
 		return nil, err
@@ -83,9 +86,10 @@ func (s *BookService) DeleteBook(id int) error {
 	return nil
 }
 
-func (s *BookService) CountBooks() (int, error) {
-	var count int
+func (s *BookService) CountBooks(filters map[string]string) (int, error) {
 	query := "SELECT COUNT(*) FROM books"
+
+	var count int
 	err := s.db.QueryRow(query).Scan(&count)
 	if err != nil {
 		return 0, err

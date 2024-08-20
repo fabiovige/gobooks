@@ -33,14 +33,22 @@ func (h *BookHandlers) GetBooks(w http.ResponseWriter, r *http.Request) {
 
 	offset := (page - 1) * size
 
+	// Capturando os filtros da URL
+	filters := map[string]string{
+		"id":     r.URL.Query().Get("id"),
+		"title":  r.URL.Query().Get("title"),
+		"author": r.URL.Query().Get("author"),
+		"genre":  r.URL.Query().Get("genre"),
+	}
+
 	// Recupera o total de registros
-	total, err := h.service.CountBooks()
+	total, err := h.service.CountBooks(filters)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	books, err := h.service.GetBooks(offset, size)
+	books, err := h.service.GetBooks(offset, size, filters)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

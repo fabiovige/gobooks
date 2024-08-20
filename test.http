@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Get all books
-GET http://localhost:8080/books?page=2&size=10
+GET http://localhost:8080/books?page=1&size=10
 Accept: application/json
 
 ### Get a book by id
@@ -17,12 +17,12 @@ GET http://localhost:8080/books/1
 Accept: application/json
 
 ### Update a book
-PUT http://localhost:8080/books/1
+PUT http://localhost:8080/books/4
 Content-Type: application/json
 
 {
-  "title": "The Lord of the Rings",
-  "author": "J.R.R. Tolkien",
+  "title": "Simplicidade e funcionalidade camionham juntos",
+  "author": "Fabio Vige",
   "genre": "Fantasy OK"
 } 
 
