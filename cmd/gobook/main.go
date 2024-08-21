@@ -28,6 +28,6 @@ func main() {
 	router.HandleFunc("PUT /books/{id}", bookHandlers.UpdateBook)
 	router.HandleFunc("DELETE /books/{id}", bookHandlers.DeleteBook)
 
-	http.ListenAndServe(":8080", router)
 	fmt.Println("Server listening on port 8080")
+	http.ListenAndServe(":8080", router)
 }

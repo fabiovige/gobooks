@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Get all books
-GET http://localhost:8080/books?page=1&size=10
+GET http://localhost:8080/books?page=1&size=10&title=Simpli
 Accept: application/json
 
 ### Get a book by id

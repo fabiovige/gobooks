@@ -47,9 +47,20 @@ func (s *BookService) GetBookByID(id int) (*Book, error) {
 }
 
 func (s *BookService) GetBooks(offset, limit int, filters map[string]string) ([]Book, error) {
-	query := "SELECT id, title, author, genre FROM books LIMIT ? OFFSET ?"
+	query := "SELECT id, title, author, genre FROM books"
+	var args []interface{}
 
-	rows, err := s.db.Query(query, limit, offset)
+	// Verifica se há um filtro para o título
+	if title, ok := filters["title"]; ok && title != "" {
+		query += " WHERE title LIKE ?"
+		args = append(args, "%"+title+"%")
+	}
+
+	// Adicionando paginação
+	query += " LIMIT ? OFFSET ?"
+	args = append(args, limit, offset)
+
+	rows, err := s.db.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}

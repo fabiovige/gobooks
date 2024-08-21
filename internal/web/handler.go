@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/fabiovige/gobooks/internal/service"
@@ -35,10 +36,7 @@ func (h *BookHandlers) GetBooks(w http.ResponseWriter, r *http.Request) {
 
 	// Capturando os filtros da URL
 	filters := map[string]string{
-		"id":     r.URL.Query().Get("id"),
-		"title":  r.URL.Query().Get("title"),
-		"author": r.URL.Query().Get("author"),
-		"genre":  r.URL.Query().Get("genre"),
+		"title": r.URL.Query().Get("title"),
 	}
 
 	// Recupera o total de registros
@@ -61,8 +59,8 @@ func (h *BookHandlers) GetBooks(w http.ResponseWriter, r *http.Request) {
 		PerPage:      size,
 		CurrentPage:  page,
 		LastPage:     lastPage,
-		FirstPageURL: fmt.Sprintf("/books?page=1&size=%d", size),
-		LastPageURL:  fmt.Sprintf("/books?page=%d&size=%d", lastPage, size),
+		FirstPageURL: fmt.Sprintf("/books?page=1&size=%d&title=%s", size, url.QueryEscape(filters["title"])),
+		LastPageURL:  fmt.Sprintf("/books?page=%d&size=%d&title=%s", lastPage, size, url.QueryEscape(filters["title"])),
 		NextPageURL:  "",
 		PrevPageURL:  "",
 		From:         offset + 1,
@@ -71,10 +69,10 @@ func (h *BookHandlers) GetBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if page > 1 {
-		pagination.PrevPageURL = fmt.Sprintf("/books?page=%d&size=%d", page-1, size)
+		pagination.PrevPageURL = fmt.Sprintf("/books?page=%d&size=%d&title=%s", page-1, size, url.QueryEscape(filters["title"]))
 	}
 	if page < lastPage {
-		pagination.NextPageURL = fmt.Sprintf("/books?page=%d&size=%d", page+1, size)
+		pagination.NextPageURL = fmt.Sprintf("/books?page=%d&size=%d&title=%s", page+1, size, url.QueryEscape(filters["title"]))
 	}
 
 	err = json.NewEncoder(w).Encode(pagination)
